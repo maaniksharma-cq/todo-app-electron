@@ -22,6 +22,7 @@ jobs:
             arch: x64
 
     runs-on: ${{ matrix.os }}
+    environment: zolo
 
     steps:
       - name: Checkout
