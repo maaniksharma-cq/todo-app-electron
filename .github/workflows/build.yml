@@ -42,7 +42,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: electron-vite build && npx electron-builder --mac --arch ${{ matrix.arch }} --publish always
+        run: npm run build && npx electron-builder --mac --arch ${{ matrix.arch }} --publish always
 
       - name: Build (Windows)
         if: matrix.platform == 'win'
