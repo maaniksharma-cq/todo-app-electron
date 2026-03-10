@@ -42,7 +42,12 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: npm run build && npx electron-builder --mac --arch ${{ matrix.arch }} --publish always
+        run: |
+          if [ "${{ matrix.arch }}" == "arm64" ]; then
+            npm run build && npx electron-builder --mac --arm64 --publish always
+          else
+            npm run build && npx electron-builder --mac --x64 --publish always
+          fi
 
       - name: Build (Windows)
         if: matrix.platform == 'win'
