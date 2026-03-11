@@ -45,6 +45,6 @@ appImage:
 npmRebuild: false
 publish:
   provider: s3
-  bucket: test-bucket-electron
+  bucket: test-bucket-electron/maanik
   region: ap-south-1
   endpoint: https://blr1.digitaloceanspaces.com

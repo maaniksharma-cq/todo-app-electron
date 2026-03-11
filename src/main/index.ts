@@ -5,8 +5,9 @@ import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase } from './database'
 import { registerIpcHandlers } from './ipc'
 import { autoUpdater } from 'electron-updater'
+import { IPC_CHANNELS } from '../../shared/types'
 
-function setupAutoUpdater(): void {
+function setupAutoUpdater(win: BrowserWindow): void {
   autoUpdater.autoDownload = true
   autoUpdater.autoInstallOnAppQuit = true
 
@@ -14,9 +15,22 @@ function setupAutoUpdater(): void {
     autoUpdater.forceDevUpdateConfig = true
   }
 
+  autoUpdater.on('checking-for-update', () => {
+    win.webContents.send(IPC_CHANNELS.UPDATE_CHECKING)
+  })
+
+  autoUpdater.on('update-available', () => {
+    win.webContents.send(IPC_CHANNELS.UPDATE_AVAILABLE)
+  })
+
+  autoUpdater.on('update-not-available', () => {
+    win.webContents.send(IPC_CHANNELS.UPDATE_NOT_AVAILABLE)
+  })
+
   autoUpdater.on('update-downloaded', () => {
+    win.webContents.send(IPC_CHANNELS.UPDATE_DOWNLOADED)
     dialog
-      .showMessageBox({
+      .showMessageBox(win, {
         type: 'info',
         title: 'Update Ready',
         message: 'A new version has been downloaded. Restart the app to apply the update.',
@@ -31,6 +45,7 @@ function setupAutoUpdater(): void {
 
   autoUpdater.on('error', (err) => {
     console.error('Auto-updater error:', err)
+    win.webContents.send(IPC_CHANNELS.UPDATE_ERROR, err.message)
   })
 
   setTimeout(() => {
@@ -42,7 +57,7 @@ function setupAutoUpdater(): void {
   }, 3000)
 }
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
@@ -69,6 +84,8 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  return mainWindow
 }
 
 app.whenReady().then(() => {
@@ -80,8 +97,8 @@ app.whenReady().then(() => {
 
   initDatabase()
   registerIpcHandlers()
-  createWindow()
-  setupAutoUpdater()
+  const mainWindow = createWindow()
+  setupAutoUpdater(mainWindow)
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

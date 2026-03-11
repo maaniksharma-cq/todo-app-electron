@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import TodoList from './pages/todoList'
 import CreateTodo from './pages/createTodo'
+import { UpdateModal } from './components/UpdateModal'
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,5 +15,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/createTodo" element={<CreateTodo />} />
       </Routes>
     </HashRouter>
+    <UpdateModal />
   </React.StrictMode>
 )
