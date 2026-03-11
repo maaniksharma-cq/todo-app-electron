@@ -1,9 +1,46 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { initDatabase, closeDatabase } from './database'
 import { registerIpcHandlers } from './ipc'
+import { autoUpdater } from 'electron-updater'
+
+function setupAutoUpdater(): void {
+  autoUpdater.autoDownload = true
+  autoUpdater.autoInstallOnAppQuit = true
+
+  if (is.dev) {
+    autoUpdater.forceDevUpdateConfig = true
+  }
+
+  autoUpdater.on('update-downloaded', () => {
+    dialog
+      .showMessageBox({
+        type: 'info',
+        title: 'Update Ready',
+        message: 'A new version has been downloaded. Restart the app to apply the update.',
+        buttons: ['Restart Now', 'Later']
+      })
+      .then(({ response }) => {
+        if (response === 0) {
+          autoUpdater.quitAndInstall()
+        }
+      })
+  })
+
+  autoUpdater.on('error', (err) => {
+    console.error('Auto-updater error:', err)
+  })
+
+  setTimeout(() => {
+    if (process.platform !== 'darwin') {
+      autoUpdater.checkForUpdatesAndNotify().catch(console.error)
+    } else {
+      autoUpdater.checkForUpdates().catch(console.error)
+    }
+  }, 3000)
+}
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -44,6 +81,7 @@ app.whenReady().then(() => {
   initDatabase()
   registerIpcHandlers()
   createWindow()
+  setupAutoUpdater()
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

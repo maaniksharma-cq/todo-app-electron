@@ -1,3 +1,5 @@
-provider: generic
-url: https://example.com/auto-updates
+provider: s3
+bucket: test-bucket-electron
+region: ap-south-1
+endpoint: https://blr1.digitaloceanspaces.com
 updaterCacheDirName: electron-app-updater
