@@ -1,5 +1,6 @@
 provider: s3
 bucket: test-bucket-electron
+path: /maanik
 region: ap-south-1
 endpoint: https://blr1.digitaloceanspaces.com
 updaterCacheDirName: electron-app-updater
