@@ -22,3 +22,8 @@ export const deleteTodoHandler = (id: number) => {
   const db = getDatabase()
   return db.prepare(`DELETE FROM todos WHERE id = ?`).run(id)
 }
+
+export const getTodoByIdHandler = (id: number) => {
+  const db = getDatabase()
+  return db.prepare(`SELECT * FROM todos WHERE id = ?`).get(id)
+}

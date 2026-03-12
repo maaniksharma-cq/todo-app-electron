@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { todoService } from '@renderer/services/todo.service'
 import { ipc } from '@renderer/services/ipc'
 import { type Todo } from '../../../../shared/types'
@@ -8,6 +9,7 @@ import { Checkbox } from '@renderer/components/ui/checkbox'
 import { Plus, Trash2, ClipboardList } from 'lucide-react'
 
 const TodoList = () => {
+  const navigate = useNavigate()
   const [todos, setTodos] = useState<Todo[]>([])
 
   const fetchTodos = useCallback(async () => {
@@ -67,9 +69,10 @@ const TodoList = () => {
                   />
                   <div className="flex-1 min-w-0">
                     <p
-                      className={`font-medium leading-snug ${
+                      className={`font-medium leading-snug cursor-pointer hover:underline ${
                         todo.completed ? 'line-through text-muted-foreground' : ''
                       }`}
+                      onClick={() => navigate(`/todo/${todo.id}`)}
                     >
                       {todo.title}
                     </p>

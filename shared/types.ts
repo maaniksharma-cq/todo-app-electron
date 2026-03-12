@@ -6,6 +6,8 @@ export const IPC_CHANNELS = {
   CREATE_TODO: 'todo:create',
   UPDATE_TODO: 'todo:update',
   DELETE_TODO: 'todo:delete',
+  GET_TODO_BY_ID: 'todo:getById',
+  DEEPLINK_NAVIGATE: 'deeplink:navigate',
   OPEN_CREATE_WINDOW: 'window:openCreateTodo',
   CLOSE_CREATE_WINDOW: 'window:closeCreateTodo',
   UPDATE_CHECKING: 'update:checking',

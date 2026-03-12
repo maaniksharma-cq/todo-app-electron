@@ -19,7 +19,6 @@ nsis:
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
 mac:
-  identity: null
   target:
     - target: dmg
       arch:
@@ -30,7 +29,8 @@ mac:
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-  notarize: false
+  notarize:
+    teamId: ${APPLE_TEAM_ID}
 dmg:
   artifactName: ${name}-${version}.${ext}
 linux:
@@ -43,6 +43,10 @@ linux:
 appImage:
   artifactName: ${name}-${version}.${ext}
 npmRebuild: false
+protocols:
+  - name: Todo App
+    schemes:
+      - todoapp
 publish:
   provider: s3
   bucket: test-bucket-electron

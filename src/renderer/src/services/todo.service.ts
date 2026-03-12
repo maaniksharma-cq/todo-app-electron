@@ -37,5 +37,11 @@ export const todoService = {
 
   async closeCreateWindow(): Promise<void> {
     await ipc.invoke(IPC_CHANNELS.CLOSE_CREATE_WINDOW)
+  },
+
+  async getById(id: number): Promise<Todo | null> {
+    const result = await ipc.invoke<unknown>(IPC_CHANNELS.GET_TODO_BY_ID, id)
+    if (!result) return null
+    return TodoSchema.parse(result)
   }
 }
