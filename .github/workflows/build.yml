@@ -37,22 +37,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Import macOS certificate
-        if: matrix.platform == 'mac'
-        env:
-          MAC_CERTS: ${{ secrets.MAC_CERTS }}
-          MAC_CERTS_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
-        run: |
-          CERT_PATH="$RUNNER_TEMP/certificate.p12"
-          echo "$MAC_CERTS" | base64 --decode -o "$CERT_PATH"
-          KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain"
-          KEYCHAIN_PASSWORD=$(openssl rand -base64 20)
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security import "$CERT_PATH" -P "$MAC_CERTS_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-          security list-keychain -d user -s "$KEYCHAIN_PATH"
+      # - name: Import macOS certificate
+      #   if: matrix.platform == 'mac'
+      #   env:
+      #     MAC_CERTS: ${{ secrets.MAC_CERTS }}
+      #     MAC_CERTS_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
+      #   run: |
+      #     CERT_PATH="$RUNNER_TEMP/certificate.p12"
+      #     echo "$MAC_CERTS" | base64 --decode -o "$CERT_PATH"
+      #     KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain"
+      #     KEYCHAIN_PASSWORD=$(openssl rand -base64 20)
+      #     security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+      #     security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+      #     security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+      #     security import "$CERT_PATH" -P "$MAC_CERTS_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+      #     security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+      #     security list-keychain -d user -s "$KEYCHAIN_PATH"
 
       - name: Build (macOS)
         if: matrix.platform == 'mac'
@@ -62,6 +62,8 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          CSC_LINK: ${{ secrets.MAC_CERTS }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
         run: |
           if [ "${{ matrix.arch }}" == "arm64" ]; then
             npm run build && npx electron-builder --mac --arm64 --publish always
