@@ -15,6 +15,7 @@ export const IPC_CHANNELS = {
   UPDATE_NOT_AVAILABLE: 'update:not-available',
   UPDATE_DOWNLOADED: 'update:downloaded',
   UPDATE_ERROR: 'update:error',
+  GET_SYSTEM_INFO: 'system:getInfo',
 } as const
 
 // ---- Zod Schemas ----

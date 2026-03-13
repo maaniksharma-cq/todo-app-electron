@@ -20,6 +20,9 @@ jobs:
           - os: windows-latest
             platform: win
             arch: x64
+          - os: windows-11-arm
+            platform: win
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     environment: zolo
@@ -89,7 +92,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           CSC_LINK: ${{ env.WIN_CERT_PATH }}
           CSC_KEY_PASSWORD: ${{ secrets.WIN_CERTS_PASSWORD }}
-        run: npm run build && npx electron-builder --win --publish always
+        run: npm run build && npx electron-builder --win --${{ matrix.arch }} --publish always
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -99,4 +102,5 @@ jobs:
             dist/*.exe
             dist/*.dmg
             dist/*.zip
+            dist/*.nsis.7z
           if-no-files-found: ignore

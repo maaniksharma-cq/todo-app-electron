@@ -6,7 +6,7 @@ import { type Todo } from '../../../../shared/types'
 import { Button } from '@renderer/components/ui/button'
 import { Card, CardContent } from '@renderer/components/ui/card'
 import { Checkbox } from '@renderer/components/ui/checkbox'
-import { Plus, Trash2, ClipboardList } from 'lucide-react'
+import { Plus, Trash2, ClipboardList, Monitor } from 'lucide-react'
 
 const TodoList = () => {
   const navigate = useNavigate()
@@ -44,10 +44,15 @@ const TodoList = () => {
               {todos.filter((t) => t.completed).length} of {todos.length} completed
             </p>
           </div>
-          <Button onClick={() => todoService.openCreateWindow()} size="sm">
-            <Plus className="size-4" />
-            New Todo
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="ghost" size="icon-sm" onClick={() => navigate('/system-info')} title="System Info">
+              <Monitor className="size-4" />
+            </Button>
+            <Button onClick={() => todoService.openCreateWindow()} size="sm">
+              <Plus className="size-4" />
+              New Todo
+            </Button>
+          </div>
         </div>
 
         {/* Todo List */}
