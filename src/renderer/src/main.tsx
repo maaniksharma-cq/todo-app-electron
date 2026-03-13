@@ -7,6 +7,7 @@ import TodoList from './pages/todoList'
 import CreateTodo from './pages/createTodo'
 import TodoDetail from './pages/todoDetail'
 import SystemInfoPage from './pages/systemInfo'
+import VideoMetadataPage from './pages/videoMetadata'
 import { UpdateModal } from './components/UpdateModal'
 import { DeepLinkNavigator } from './components/DeepLinkNavigator'
 
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
 				<Route path="/createTodo" element={<CreateTodo />} />
 				<Route path="/todo/:id" element={<TodoDetail />} />
 				<Route path="/system-info" element={<SystemInfoPage />} />
+				<Route path="/video-metadata" element={<VideoMetadataPage />} />
 			</Routes>
 		</HashRouter>
 		<UpdateModal />

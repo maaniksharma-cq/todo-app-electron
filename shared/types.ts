@@ -16,7 +16,29 @@ export const IPC_CHANNELS = {
   UPDATE_DOWNLOADED: 'update:downloaded',
   UPDATE_ERROR: 'update:error',
   GET_SYSTEM_INFO: 'system:getInfo',
+  OPEN_VIDEO_FILE: 'video:openFile',
+  GET_VIDEO_METADATA: 'video:getMetadata',
 } as const
+
+export interface VideoStream {
+  index: number
+  codec_type: string
+  codec_name: string
+  width?: number
+  height?: number
+  r_frame_rate?: string
+  sample_rate?: string
+  channels?: number
+}
+
+export interface VideoMetadata {
+  filename: string
+  format: string
+  duration: number
+  size: number
+  bitrate: number
+  streams: VideoStream[]
+}
 
 // ---- Zod Schemas ----
 export const TodoSchema = z.object({

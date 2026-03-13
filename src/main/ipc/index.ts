@@ -4,6 +4,7 @@ import { join } from 'path'
 import { IPC_CHANNELS, type CreateTodoInput, type UpdateTodoInput } from '../../../shared/types'
 import { createTodoHandler, getTodosHandler, updateTodoHandler, deleteTodoHandler, getTodoByIdHandler } from './todo.handlers'
 import { openCreateTodoWindowHandler, closeCreateTodoWindowHandler } from './window.handlers'
+import { openVideoFileHandler, getVideoMetadataHandler } from './video.handlers'
 
 export function registerIpcHandlers(): void {
   // todo handlers
@@ -16,6 +17,10 @@ export function registerIpcHandlers(): void {
   // window handlers
   ipcMain.handle(IPC_CHANNELS.OPEN_CREATE_WINDOW, () => openCreateTodoWindowHandler())
   ipcMain.handle(IPC_CHANNELS.CLOSE_CREATE_WINDOW, () => closeCreateTodoWindowHandler())
+
+  // video handlers
+  ipcMain.handle(IPC_CHANNELS.OPEN_VIDEO_FILE, () => openVideoFileHandler())
+  ipcMain.handle(IPC_CHANNELS.GET_VIDEO_METADATA, (_event, filePath: string) => getVideoMetadataHandler(filePath))
 
   // system info handler
   ipcMain.handle(IPC_CHANNELS.GET_SYSTEM_INFO, () => {

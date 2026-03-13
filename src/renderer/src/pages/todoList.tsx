@@ -6,7 +6,7 @@ import { type Todo } from '../../../../shared/types'
 import { Button } from '@renderer/components/ui/button'
 import { Card, CardContent } from '@renderer/components/ui/card'
 import { Checkbox } from '@renderer/components/ui/checkbox'
-import { Plus, Trash2, ClipboardList, Monitor } from 'lucide-react'
+import { Plus, Trash2, ClipboardList, Monitor, Video } from 'lucide-react'
 
 const TodoList = () => {
   const navigate = useNavigate()
@@ -47,6 +47,9 @@ const TodoList = () => {
           <div className="flex gap-2">
             <Button variant="ghost" size="icon-sm" onClick={() => navigate('/system-info')} title="System Info">
               <Monitor className="size-4" />
+            </Button>
+            <Button variant="ghost" size="icon-sm" onClick={() => navigate('/video-metadata')} title="Video Metadata">
+              <Video className="size-4" />
             </Button>
             <Button onClick={() => todoService.openCreateWindow()} size="sm">
               <Plus className="size-4" />
